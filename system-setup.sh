@@ -18,9 +18,9 @@ NFS_SHARED_HOME_EXPORT_DIR=$1
 # NFS to be shared by all nodes in the cluster.
 NFS_DATASETS_EXPORT_DIR=$2
 # Account in which various software should be setup.
-USERNAME=$4
+USERNAME=$3
 # Number of nodes in the cluster.
-NUM_NODES=$6
+NUM_NODES=$4
 
 # === Paarameters decided by this script. ===
 # Directory where the NFS partition will be mounted on NFS clients
@@ -33,6 +33,7 @@ DATASETS_DIR=/datasets
 echo -e "\n===== INSTALLING COMMON UTILITIES ====="
 apt-get update
 apt-get --assume-yes install mosh vim tmux pdsh tree axel htop ctags
+apt-get --assume-yes install libevent-dev
 # NFS
 echo -e "\n===== INSTALLING NFS PACKAGES ====="
 apt-get --assume-yes install nfs-kernel-server nfs-common
@@ -142,4 +143,15 @@ then
   # Execute all user-specific setup in user's shared folder using nfs.
   # This is to try and reduce network traffic during builds.
   sudo --login -u $USERNAME $SCRIPTPATH/user-setup.sh
+else
+  # Install memcached on all servers except for NFS
+  echo -e "\n===== INSTALLING MEMCACHED ====="
+  wget http://www.memcached.org/files/memcached-1.5.4.tar.gz
+  tar -zxf memcached-1.5.4.tar.gz
+  cd memcached-1.5.4
+  ./configure --prefix=/usr/local/memcached
+  make && make test && make install
+  rm -rf memcached-1.5.4*
 fi
+
+

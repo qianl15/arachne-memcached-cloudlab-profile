@@ -1,6 +1,7 @@
 """
-Profile for a generic CloudLab cluster consisting of a specified number of nodes
-and an NFS server. NFS server hosts users home directories as well as connected
+Profile for a CloudLab cluster consisting of a specified number of nodes
+and an NFS server. Modified for Arachne-memcached benchmark tests.
+NFS server hosts users home directories as well as connected
 CloudLab datasets. Each node has local storage mounted at /scratch. After the
 cluster is instantiated you can check /var/tmp/startup-1.txt for log output from
 the startup scripts.
