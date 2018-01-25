@@ -33,7 +33,9 @@ DATASETS_DIR=/datasets
 echo -e "\n===== INSTALLING COMMON UTILITIES ====="
 apt-get update
 apt-get --assume-yes install mosh vim tmux pdsh tree axel htop ctags
-apt-get --assume-yes install libevent-dev
+apt-get --assume-yes install libevent-dev pkg-config zlib1g-dev
+apt-get --assume-yes install build-essential autoconf automake libpcre3-dev
+
 # NFS
 echo -e "\n===== INSTALLING NFS PACKAGES ====="
 apt-get --assume-yes install nfs-kernel-server nfs-common
