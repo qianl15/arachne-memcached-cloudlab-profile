@@ -12,4 +12,9 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # echo -e "\n===== SETUP USER CONFIG SETTINGS ====="
 # cd $HOME/config
 # ./cloudlab/setup.sh
-echo "export PATH=/usr/local/memcached/bin:$PATH" >> $HOME/.bashrc
+
+# Add memcached to the search path
+cat >> $HOME/.bashrc <<EOM
+
+export PATH=/usr/local/memcached/bin:$PATH
+EOM
