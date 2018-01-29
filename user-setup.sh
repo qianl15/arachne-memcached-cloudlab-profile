@@ -16,5 +16,6 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # Add memcached to the search path
 cat >> $HOME/.bashrc <<EOM
 
-export PATH=/usr/local/memcached/bin:$PATH
+export PATH=/usr/local/memcached/bin:\$PATH
+export fakePATH=/usr/local/memcached/bin:$PATH
 EOM
