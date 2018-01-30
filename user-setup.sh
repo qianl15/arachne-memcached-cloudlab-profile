@@ -19,4 +19,5 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 cat >> $HOME/.bashrc <<EOM
 
 export PATH=/usr/local/memcached/bin:\$PATH
+
 EOM
