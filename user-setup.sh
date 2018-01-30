@@ -14,8 +14,9 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # ./cloudlab/setup.sh
 
 # Add memcached to the search path
+# do not use export PATH=xxx:$PATH
+# Otherwise, you will not be able to login
 cat >> $HOME/.bashrc <<EOM
 
 export PATH=/usr/local/memcached/bin:\$PATH
-export fakePATH=/usr/local/memcached/bin:$PATH
 EOM
