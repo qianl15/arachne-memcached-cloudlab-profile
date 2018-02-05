@@ -147,14 +147,13 @@ then
   # This is to try and reduce network traffic during builds.
   sudo --login -u $USERNAME $SCRIPTPATH/user-setup.sh
 else
-  # Install memcached on all servers except for NFS
-  echo -e "\n===== INSTALLING MEMCACHED ====="
+  # Install memcached 1.5.4 on all servers except for NFS
+  echo -e "\n===== INSTALLING MEMCACHED 1.5.4 ====="
   wget http://www.memcached.org/files/memcached-1.5.4.tar.gz
   tar -zxf memcached-1.5.4.tar.gz
   cd memcached-1.5.4
-  ./configure --prefix=/usr/local/memcached
+  ./configure --prefix=/usr/local/memcached-1.5.4
   make && make test && make install
   rm -rf memcached-1.5.4*
+  mv /usr/local/memcached-1.5.4/bin/memcached /usr/local/memcached-1.5.4/bin/memcached-1.5.4
 fi
-
-
