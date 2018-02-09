@@ -62,6 +62,14 @@ then
   echo -e "\n===== SETTING UP NFS EXPORTS ON NFS ====="
   # Make the file system rwx by all.
   chmod 777 $NFS_SHARED_HOME_EXPORT_DIR
+
+  # The datasets directory only exists if the user is mounting remote datasets.
+  # Otherwise we'll just create an empty directory.
+  if [ ! -e "$NFS_DATASETS_EXPORT_DIR" ]
+  then
+    mkdir $NFS_DATASETS_EXPORT_DIR
+  fi
+
   chmod 777 $NFS_DATASETS_EXPORT_DIR
 
   # Remote the lost+found folder in the shared home directory
@@ -89,6 +97,7 @@ then
   > /local/setup-nfs-done
 fi
 
+echo -e "\n===== WAITING FOR NFS SERVER TO COMPLETE SETUP ====="
 # Wait until nfs is properly set up. 
 while [ "$(ssh nfs "[ -f /local/setup-nfs-done ] && echo 1 || echo 0")" != "1" ]; do
   sleep 1
@@ -113,12 +122,16 @@ then
   echo -e "\n===== MOVING USERS HOME DIRECTORY TO NFS HOME ====="
   for user in $(ls /users/)
   do
+    # Ensure that no processes by that user are running.
+    pkill -u $user
     usermod --move-home --home $SHARED_HOME_DIR/$user $user
   done
 else
   echo -e "\n===== SETTING USERS HOME DIRECTORY TO NFS HOME ====="
   for user in $(ls /users/)
   do
+    # Ensure that no processes by that user are running.
+    pkill -u $user
     usermod --home $SHARED_HOME_DIR/$user $user
   done
 fi
