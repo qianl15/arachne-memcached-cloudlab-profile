@@ -15,6 +15,7 @@ import re
 
 import geni.aggregate.cloudlab as cloudlab
 import geni.portal as portal
+import geni.rspec.emulab as emulab
 import geni.rspec.pg as pg
 import geni.urn as urn
 
