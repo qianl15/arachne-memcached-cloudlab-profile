@@ -13,7 +13,7 @@ git clone https://github.com/qianl15/config.git
 # Otherwise, you will not be able to login
 cat >> $HOME/.bashrc <<EOM
 
-export PATH=/usr/local/memcached-1.5.4/bin:\$PATH
+export PATH=/usr/local/memcached-1.5.6/bin:\$PATH
 
 EOM
 
