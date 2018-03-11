@@ -166,7 +166,7 @@ else
   tar -zxf memcached-1.5.6.tar.gz
   cd memcached-1.5.6
   ./configure --prefix=/usr/local/memcached-1.5.6
-  make && make test && make install
+  make && make install
   cd ..
   rm -rf memcached-1.5.6*
   mv /usr/local/memcached-1.5.6/bin/memcached /usr/local/memcached-1.5.6/bin/memcached-1.5.6
