@@ -114,7 +114,13 @@ node_local_storage_dir = "/scratch"
 for host in hostnames:
     node = request.RawPC(host)
     node.hardware_type = params.hardware_type
-    node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
+    if params.image == "UBUNTU14-64-STD":
+        node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
+    else:
+        if host == "nfs":
+            node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.nfs")
+        else:
+            node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.n1")
 
     # Install a private/public key on this node
     node.installRootKeys(True, True)
