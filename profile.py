@@ -120,7 +120,7 @@ for host in hostnames:
         if host == "nfs":
             node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.nfs")
         else:
-            node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.n1")
+            node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
 
     # Install a private/public key on this node
     node.installRootKeys(True, True)
