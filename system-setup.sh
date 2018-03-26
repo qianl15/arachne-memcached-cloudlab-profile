@@ -36,6 +36,7 @@ apt-get --assume-yes install mosh vim tmux pdsh tree axel htop ctags
 apt-get --assume-yes install libevent-dev pkg-config zlib1g-dev
 apt-get --assume-yes install build-essential autoconf automake libpcre3-dev
 apt-get --assume-yes install python-pip
+apt-get --assume-yes install scons gengetopt libzmq-dev
 
 # NFS
 echo -e "\n===== INSTALLING NFS PACKAGES ====="
