@@ -118,7 +118,7 @@ for host in hostnames:
         node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
     else:
         if host == "nfs":
-            node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.nfs")
+            node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
         else:
             node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
 
