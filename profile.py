@@ -25,9 +25,8 @@ pc = portal.Context()
 # The possible set of base disk-images that this cluster can be booted with.
 # The second field of every tupule is what is displayed on the cloudlab
 # dashboard.
-images = [ ("UBUNTU14-64-STD", "Ubuntu 14.04"),
-           ("UBUNTU16-64-STD", "Ubuntu 16.04"),
-           ("arachne-memcached.n2", "Ubuntu 16.04 no Mitigation")
+images = [ ("UBUNTU16-64-STD", "Ubuntu 16.04"),
+           ("arachne-memcached.nfs:1", "Ubuntu 16.04 no Mitigation")
          ]
 
 # The possible set of node-types this cluster can be configured with. Currently 
@@ -116,8 +115,8 @@ node_local_storage_dir = "/scratch"
 for host in hostnames:
     node = request.RawPC(host)
     node.hardware_type = params.hardware_type
-    if params.image == "arachne-memcached.n2":
-        node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.n2")
+    if params.image != "UBUNTU16-64-STD":
+        node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:%s" % params.image)
     else:
         node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
 
