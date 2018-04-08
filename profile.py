@@ -26,7 +26,10 @@ pc = portal.Context()
 # The second field of every tupule is what is displayed on the cloudlab
 # dashboard.
 images = [ ("UBUNTU14-64-STD", "Ubuntu 14.04"),
-           ("UBUNTU16-64-STD", "Ubuntu 16.04") ]
+           ("UBUNTU16-64-STD", "Ubuntu 16.04"),
+           ("UBUNTU14-64-STD:42", "Ubuntu 14.04 no Mitigation"),
+           ("UBUNTU16-64-STD:33", "Ubuntu 16.04 no Mitigation")
+         ]
 
 # The possible set of node-types this cluster can be configured with. Currently 
 # only m510 machines are supported.
@@ -114,13 +117,7 @@ node_local_storage_dir = "/scratch"
 for host in hostnames:
     node = request.RawPC(host)
     node.hardware_type = params.hardware_type
-    if params.image == "UBUNTU14-64-STD":
-        node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
-    else:
-        if host == "nfs":
-            node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
-        else:
-            node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
+    node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
 
     # Install a private/public key on this node
     node.installRootKeys(True, True)
