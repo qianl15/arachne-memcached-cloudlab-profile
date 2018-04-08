@@ -27,8 +27,7 @@ pc = portal.Context()
 # dashboard.
 images = [ ("UBUNTU14-64-STD", "Ubuntu 14.04"),
            ("UBUNTU16-64-STD", "Ubuntu 16.04"),
-           ("UBUNTU14-64-STD:42", "Ubuntu 14.04 no Mitigation"),
-           ("UBUNTU16-64-STD:33", "Ubuntu 16.04 no Mitigation")
+           ("arachne-memcached.nfs", "Ubuntu 16.04 no Mitigation")
          ]
 
 # The possible set of node-types this cluster can be configured with. Currently 
@@ -117,7 +116,10 @@ node_local_storage_dir = "/scratch"
 for host in hostnames:
     node = request.RawPC(host)
     node.hardware_type = params.hardware_type
-    node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
+    if params.image == "arachne-memcached.nfs":
+        node.disk_image = urn.Image(cloudlab.Utah, "ramcloud-PG0:arachne-memcached.nfs")
+    else:
+        node.disk_image = urn.Image(cloudlab.Utah, "emulab-ops:%s" % params.image)
 
     # Install a private/public key on this node
     node.installRootKeys(True, True)
