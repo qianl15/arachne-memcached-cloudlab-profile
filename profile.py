@@ -26,7 +26,7 @@ pc = portal.Context()
 # The second field of every tupule is what is displayed on the cloudlab
 # dashboard.
 images = [ ("UBUNTU16-64-STD", "Ubuntu 16.04"),
-           ("arachne-memcached.nfs", "Ubuntu 16.04 no Mitigation")
+           ("arachne-ubuntu16.nfs", "Ubuntu 16.04 no Mitigation")
          ]
 
 # The possible set of node-types this cluster can be configured with. Currently 
