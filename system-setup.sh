@@ -88,70 +88,70 @@ then
   done
 
   # Start the NFS service.
-  /etc/init.d/nfs-kernel-server start
+#  /etc/init.d/nfs-kernel-server start
 
   # Give it a second to start-up
-  sleep 5
+#  sleep 5
 
   # Use the existence of this file as a flag for other servers to know that
   # NFS is finished with its setup.
-  > /local/setup-nfs-done
+#  > /local/setup-nfs-done
 fi
 
 echo -e "\n===== WAITING FOR NFS SERVER TO COMPLETE SETUP ====="
 # Wait until nfs is properly set up. 
-while [ "$(ssh nfs "[ -f /local/setup-nfs-done ] && echo 1 || echo 0")" != "1" ]; do
-  sleep 1
-done
+#while [ "$(ssh nfs "[ -f /local/setup-nfs-done ] && echo 1 || echo 0")" != "1" ]; do
+#  sleep 1
+#done
 
 # NFS clients setup (all servers are NFS clients).
-echo -e "\n===== SETTING UP NFS CLIENT ====="
-nfs_clan_ip=`grep "nfs-clan" /etc/hosts | cut -d$'\t' -f1`
-my_clan_ip=`grep "$(hostname --short)-clan" /etc/hosts | cut -d$'\t' -f1`
-mkdir $SHARED_HOME_DIR; mount -t nfs4 $nfs_clan_ip:$NFS_SHARED_HOME_EXPORT_DIR $SHARED_HOME_DIR
-echo "$nfs_clan_ip:$NFS_SHARED_HOME_EXPORT_DIR $SHARED_HOME_DIR nfs4 rw,sync,hard,intr,addr=$my_clan_ip 0 0" >> /etc/fstab
-
-mkdir $DATASETS_DIR; mount -t nfs4 $nfs_clan_ip:$NFS_DATASETS_EXPORT_DIR $DATASETS_DIR
-echo "$nfs_clan_ip:$NFS_DATASETS_EXPORT_DIR $DATASETS_DIR nfs4 rw,sync,hard,intr,addr=$my_clan_ip 0 0" >> /etc/fstab
-
+#echo -e "\n===== SETTING UP NFS CLIENT ====="
+#nfs_clan_ip=`grep "nfs-clan" /etc/hosts | cut -d$'\t' -f1`
+#my_clan_ip=`grep "$(hostname --short)-clan" /etc/hosts | cut -d$'\t' -f1`
+#mkdir $SHARED_HOME_DIR; mount -t nfs4 $nfs_clan_ip:$NFS_SHARED_HOME_EXPORT_DIR $SHARED_HOME_DIR
+#echo "$nfs_clan_ip:$NFS_SHARED_HOME_EXPORT_DIR $SHARED_HOME_DIR nfs4 rw,sync,hard,intr,addr=$my_clan_ip 0 0" >> /etc/fstab
+#
+#mkdir $DATASETS_DIR; mount -t nfs4 $nfs_clan_ip:$NFS_DATASETS_EXPORT_DIR $DATASETS_DIR
+#echo "$nfs_clan_ip:$NFS_DATASETS_EXPORT_DIR $DATASETS_DIR nfs4 rw,sync,hard,intr,addr=$my_clan_ip 0 0" >> /etc/fstab
+#
 # Move user accounts onto the shared directory. The NFS server is responsible
 # for physically moving user files to shared folder. All other nodes just change
 # the home directory in /etc/passwd. This avoids the problem of all servers
 # trying to move files to the same place at the same time.
-if [ $(hostname --short) == "nfs" ]
-then
-  echo -e "\n===== MOVING USERS HOME DIRECTORY TO NFS HOME ====="
-  for user in $(ls /users/)
-  do
-    # Ensure that no processes by that user are running.
-    pkill -u $user
-    usermod --move-home --home $SHARED_HOME_DIR/$user $user
-  done
-else
-  echo -e "\n===== SETTING USERS HOME DIRECTORY TO NFS HOME ====="
-  for user in $(ls /users/)
-  do
-    # Ensure that no processes by that user are running.
-    pkill -u $user
-    usermod --home $SHARED_HOME_DIR/$user $user
-  done
-fi
+#if [ $(hostname --short) == "nfs" ]
+#then
+#  echo -e "\n===== MOVING USERS HOME DIRECTORY TO NFS HOME ====="
+#  for user in $(ls /users/)
+#  do
+#    # Ensure that no processes by that user are running.
+#    pkill -u $user
+#    usermod --move-home --home $SHARED_HOME_DIR/$user $user
+#  done
+#else
+#  echo -e "\n===== SETTING USERS HOME DIRECTORY TO NFS HOME ====="
+#  for user in $(ls /users/)
+#  do
+#    # Ensure that no processes by that user are running.
+#    pkill -u $user
+#    usermod --home $SHARED_HOME_DIR/$user $user
+#  done
+#fi
 
 # Setup password-less ssh between nodes
-if [ $(hostname --short) == "nfs" ]
-then
-  echo -e "\n===== SETTING UP SSH BETWEEN NODES ====="
-  for user in $(ls $SHARED_HOME_DIR)
-  do
-    ssh_dir=$SHARED_HOME_DIR/$user/.ssh
-    /usr/bin/geni-get key > $ssh_dir/id_rsa
-    chmod 600 $ssh_dir/id_rsa
-    chown $user: $ssh_dir/id_rsa
-    ssh-keygen -y -f $ssh_dir/id_rsa > $ssh_dir/id_rsa.pub
-    cat $ssh_dir/id_rsa.pub >> $ssh_dir/authorized_keys
-    chmod 644 $ssh_dir/authorized_keys
-  done
-fi
+#if [ $(hostname --short) == "nfs" ]
+#then
+#  echo -e "\n===== SETTING UP SSH BETWEEN NODES ====="
+#  for user in $(ls $SHARED_HOME_DIR)
+#  do
+#    ssh_dir=$SHARED_HOME_DIR/$user/.ssh
+#    /usr/bin/geni-get key > $ssh_dir/id_rsa
+#    chmod 600 $ssh_dir/id_rsa
+#    chown $user: $ssh_dir/id_rsa
+#    ssh-keygen -y -f $ssh_dir/id_rsa > $ssh_dir/id_rsa.pub
+#    cat $ssh_dir/id_rsa.pub >> $ssh_dir/authorized_keys
+#    chmod 644 $ssh_dir/authorized_keys
+#  done
+#fi
 
 # NFS specific configuration.
 if [ $(hostname --short) == "nfs" ]
